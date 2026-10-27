@@ -2,11 +2,13 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { Auth } from './services/auth';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
+    provideRouter(routes),
+    Auth
   ]
 };

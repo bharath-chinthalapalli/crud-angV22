@@ -1,32 +1,11 @@
 {
   "users": [
     {
-      "id": "1",
-      "pname": "Bharath",
-      "pprice": 1000,
-      "plocation": "Hyderabad",
-      "pdetails": "Sample user"
-    },
-    {
       "pname": "Bharath A",
       "pprice": 1000,
       "plocation": "Hyderabad",
       "pdetails": "Sample user",
       "id": "2"
-    },
-    {
-      "pname": "test H",
-      "pprice": 21,
-      "plocation": "Hyderabad",
-      "pdetails": "Sample user",
-      "id": "VpL9mDkzOVs"
-    },
-    {
-      "pname": "Bharath A",
-      "pprice": 1,
-      "plocation": "Hyderabad",
-      "pdetails": "Sample user",
-      "id": "agGzniq3Avk"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

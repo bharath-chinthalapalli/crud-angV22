@@ -1,0 +1,92 @@
+<h2>Angular built-in pipes</h2>
+
+<h3>Date and time — date pipe</h3>
+<p>Input: 27 October 2026, 2:30:45 PM (India time)</p>
+<p>Default date: {{ sampleDate | date:'mediumDate':'+0530' }}</p>
+<p>dd/MM/yyyy: {{ sampleDate | date:'dd/MM/yyyy':'+0530' }}</p>
+<p>fullDate: {{ sampleDate | date:'fullDate':'+0530' }}</p>
+<p>12-hour time (hh:mm:ss a): {{ sampleDate | date:'hh:mm:ss a':'+0530' }}</p>
+<p>24-hour time (HH:mm:ss): {{ sampleDate | date:'HH:mm:ss':'+0530' }}</p>
+<p>Date and time: {{ sampleDate | date:'dd-MM-yyyy hh:mm a':'+0530' }}</p>
+<p>UTC time: {{ sampleDate | date:'HH:mm:ss':'UTC' }}</p>
+<small>Time also uses the date pipe. MM = month, mm = minutes.</small>
+
+<h3>Text pipes</h3>
+<p>uppercase — bharathkumar: {{ 'bharathkumar' | uppercase }}</p>
+<p>lowercase — BHARATHKUMAR: {{ 'BHARATHKUMAR' | lowercase }}</p>
+<p>titlecase — bharath kumar: {{ 'bharath kumar' | titlecase }}</p>
+
+<h3>Number, currency and percent pipes</h3>
+<p>number — 12345.6789, two decimals: {{ 12345.6789 | number:'1.2-2' }}</p>
+<p>number — 7, minimum three integer digits: {{ 7 | number:'3.0-0' }}</p>
+<p>currency — 1500, INR symbol: {{ 1500 | currency:'INR':'symbol':'1.2-2' }}</p>
+<p>currency — 1500, USD code: {{ 1500 | currency:'USD':'code':'1.2-2' }}</p>
+<p>percent — 0.75: {{ 0.75 | percent }}</p>
+<p>percent — 0.756, two decimals: {{ 0.756 | percent:'1.2-2' }}</p>
+<small>1.2-2 = minimum 1 integer digit, minimum 2 and maximum 2 decimal digits.</small>
+
+<h3>slice pipe — part of a string or array</h3>
+<p>Angular, indexes 0 to 3: {{ 'Angular' | slice:0:3 }}</p>
+<p>Original fruits: {{ fruits | json }}</p>
+<p>First two fruits: {{ fruits | slice:0:2 | json }}</p>
+<small>The start index is included; the end index is excluded.</small>
+
+<h3>json pipe — display an object</h3>
+<pre>{{ sampleUser | json }}</pre>
+
+<h3>keyvalue pipe — display each object entry</h3>
+@for (item of sampleUser | keyvalue; track item.key) {
+  <p>{{ item.key }}: {{ item.value }}</p>
+}
+
+<h3>async pipe — display a value from an Observable</h3>
+<p>{{ message$ | async }}</p>
+
+<h3>i18nPlural pipe — message based on count</h3>
+<p>Count 0: {{ 0 | i18nPlural:messageMap }}</p>
+<p>Count 1: {{ 1 | i18nPlural:messageMap }}</p>
+<p>Count 2: {{ messageCount | i18nPlural:messageMap }}</p>
+
+<h3>i18nSelect pipe — message based on a value</h3>
+<p>Status approved: {{ status | i18nSelect:statusMap }}</p>
+<p>Status rejected: {{ 'rejected' | i18nSelect:statusMap }}</p>
+<p>Status pending: {{ 'pending' | i18nSelect:statusMap }}</p>
+
+<hr>
+<h2>Custom pipe examples</h2>
+<p>{{ 'bharathkumar' | customPipe }}</p>
+<p>Price: 1000 | Discount: 10% | Final price: {{ 1000 | discount:10 }}</p>
+<p>Price: 2000 | Discount: 20% | Final price: {{ 2000 | discount:20 }}</p>
+
+<h3>Short text pipe</h3>
+<p>Original: Angular custom pipes are easy to learn</p>
+<p>Short text: {{ 'Angular custom pipes are easy to learn' | shortText }}</p>
+<p>Short input: {{ 'Hello Angular' | shortText }}</p>
+
+<h3>Name title pipe</h3>
+<p>bharathkumar (male): {{ 'bharathkumar' | nameTitle:'male' }}</p>
+<p>Sita (female): {{ 'Sita' | nameTitle:'female' }}</p>
+
+<h3>Result pipe</h3>
+<p>Marks 35: {{ 35 | result }}</p>
+<p>Marks 34: {{ 34 | result }}</p>
+
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <div>
+    <label for="username" appCustomDirective>Username</label>
+    <input id="username" type="text" formControlName="username" autocomplete="username">
+    @if (loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['required']) {
+      <small class="text-red-600">Username is required.</small>
+    }
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input id="password" type="password" formControlName="password" autocomplete="current-password">
+    @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']) {
+      <small class="text-red-600">Password is required.</small>
+    }
+  </div>
+
+  <button type="submit">Login</button>
+</form>

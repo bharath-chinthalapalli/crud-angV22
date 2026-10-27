@@ -32,13 +32,11 @@ export class UserList {
   }
 
   addUser(user?: Users) {
-    const dialogRef = this._dialoge.open(AddUser, {
+    this._dialoge.open(AddUser, {
       width: '400px',
       disableClose: true,
       data: user ?? null,
-    });
-
-    dialogRef.afterClosed().subscribe((newUser: Users | undefined) => {
+    }).afterClosed().subscribe((newUser: Users | undefined) => {
       if (newUser) {
         this.getAllProperties();
       }

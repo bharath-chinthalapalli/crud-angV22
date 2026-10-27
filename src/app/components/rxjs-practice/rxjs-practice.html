@@ -1,0 +1,90 @@
+<main>
+  <a routerLink="/login">Back to login</a>
+  <h1>RxJS interview practice</h1>
+  <p>Buttons click చేసి output observe చేయి. ఇవి mock requests; backend అవసరం లేదు.</p>
+  <p><code>of()</code> value ఇస్తుంది → <code>pipe()</code> లో operators పని చేస్తాయి → <code>subscribe()</code> final value తీసుకుంటుంది.</p>
+
+  <section>
+    <h2>1. map — value మార్చడానికి</h2>
+    <p>Price 1000 మీద 10% discount ఇస్తే 900 రావాలి.</p>
+    <pre>of(1000).pipe(
+  map(price =&gt; price - price * 10 / 100)
+).subscribe(price =&gt; ...);</pre>
+    <button (click)="runMap()">Run map</button>
+    <output>{{ mapOutput() }}</output>
+    <p><strong>Interview:</strong> map transforms each emitted value and emits the transformed result.</p>
+    <p>API నుంచి users వస్తే వారి names మాత్రమే తీసుకోవడానికి కూడా map వాడొచ్చు. RxJS map ప్రతి emission మీద పని చేస్తుంది; array.map array లో ప్రతి item మీద పని చేస్తుంది.</p>
+  </section>
+
+  <section>
+    <h2>2. tap — value చూడడానికి / side effect చేయడానికి</h2>
+    <p>Logging వంటి పనులకు tap. Value ని మార్చాలంటే map.</p>
+    <pre>of(1000).pipe(
+  tap(price =&gt; console.log('Before', price)),
+  map(price =&gt; price * 0.9),
+  tap(price =&gt; console.log('After', price))
+).subscribe(price =&gt; ...);</pre>
+    <button (click)="runTap()">Run tap</button>
+    @for (line of tapOutput(); track $index) { <output>{{ line }}</output> }
+    <p><strong>Interview:</strong> tap performs side effects without replacing the emitted value. Returning a value from tap does not transform the stream.</p>
+    <p>Expected: Before 1000 → After 900 → Subscriber 900.</p>
+  </section>
+
+  <section>
+    <h2>3. catchError — error handle చేయడానికి</h2>
+    <p>Request fail అయితే page కి fallback message ఇస్తాం.</p>
+    <pre>request$.pipe(
+  catchError(error =&gt; of('No users available'))
+).subscribe(result =&gt; ...);</pre>
+    <button (click)="runRequest(false)">Successful request</button>
+    <button (click)="runRequest(true)">Failed request</button>
+    <output>{{ errorOutput() }}</output>
+    <p><strong>Interview:</strong> catchError catches an upstream error and returns a replacement Observable, or rethrows the error.</p>
+    <p>ఇక్కడ <code>of(...)</code> fallback value emit చేసి complete అవుతుంది. Failed request ని automatically retry చేయదు.</p>
+  </section>
+
+  <section>
+    <h2>4. switchMap — latest request result మాత్రమే</h2>
+    <p>Search suggestions example. ప్రతి mock search కి 1.5 seconds పడుతుంది.</p>
+    <p><strong>Try:</strong> A → An → Angular buttons ని 1.5 seconds లోపే వరుసగా click చేయి. Results for Angular మాత్రమే రావాలి.</p>
+    <pre>searches.pipe(
+  switchMap(term =&gt; searchRequest(term))
+).subscribe(result =&gt; ...);</pre>
+    <button (click)="search('A')">Search A</button>
+    <button (click)="search('An')">Search An</button>
+    <button (click)="search('Angular')">Search Angular</button>
+    <output>{{ searchOutput() }}</output>
+    @for (line of searchLog(); track $index) { <div>{{ line }}</div> }
+    <p><strong>Interview:</strong> switchMap unsubscribes from the previous inner Observable when a new value arrives, and subscribes to the latest one.</p>
+    <p>Angular HttpClient request unsubscribe అయితే pending client request abort అవుతుంది. Server ఇప్పటికే చేసిన పని undo అవుతుందని అర్థం కాదు. అందుకే ప్రతి save complete కావాల్సినప్పుడు switchMap సరిపోదు.</p>
+  </section>
+
+  <section>
+    <h2>5. concatMap — ఒక్కొక్క request వరుసగా</h2>
+    <p>Save button 3 times త్వరగా click చేయి. Save 1 finish అయ్యాకే Save 2 start అవుతుంది.</p>
+    <pre>saves.pipe(
+  concatMap(id =&gt; saveRequest(id))
+).subscribe(result =&gt; ...);</pre>
+    <button (click)="queueSave()">Queue a mock save</button>
+    @for (line of saveLog(); track $index) { <output>{{ line }}</output> }
+    <p><strong>Interview:</strong> concatMap queues incoming values and processes inner Observables one at a time, preserving order.</p>
+    <p>ప్రతి save complete కావాలి, order ముఖ్యం అంటే concatMap. Current request complete కాకపోతే next queued request start అవదు.</p>
+  </section>
+
+  <section>
+    <h2>Quick revision</h2>
+    <table>
+      <thead><tr><th>Operator</th><th>Use</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>map</td><td>Transform value</td><td>Price → discounted price</td></tr>
+        <tr><td>tap</td><td>Side effect</td><td>Log API response</td></tr>
+        <tr><td>catchError</td><td>Handle error</td><td>Fallback result</td></tr>
+        <tr><td>switchMap</td><td>Latest inner Observable</td><td>Search suggestions</td></tr>
+        <tr><td>concatMap</td><td>Queue in order</td><td>Sequential saves</td></tr>
+      </tbody>
+    </table>
+    <p>switchMap, concatMap callbacks Observable return చేస్తాయి. Subject ఇక్కడ button clicks ని stream గా పంపడానికి మాత్రమే వాడాం. delay mock request waiting time కోసం.</p>
+    <p>Search stream లో error వచ్చిన తర్వాత కూడా next search పని చేయాలంటే catchError ని switchMap లోని request pipe లో పెట్టాలి. బయట పెడితే fallback complete అయ్యాక search stream కూడా complete కావచ్చు.</p>
+    <a href="https://rxjs.dev/guide/operators" target="_blank" rel="noopener noreferrer">RxJS official documentation</a>
+  </section>
+</main>

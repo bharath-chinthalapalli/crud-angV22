@@ -5,8 +5,16 @@
     <div class="flex flex-col gap-3 py-2">
       <label for="pname">User Name</label>
       <input id="pname" class="border rounded p-2" formControlName="pname" />
-      @if (userForm.controls.pname.touched && userForm.controls.pname.invalid) {
-        <small class="text-red-600">Enter a name with at least 3 characters, not only spaces.</small>
+      @if (userForm.get('pname')?.touched) {
+        @if (userForm.get('pname')?.errors?.['required']) {
+          <small class="text-red-600">Name is required.</small>
+        }
+        @if (userForm.get('pname')?.errors?.['minlength']) {
+          <small class="text-red-600">Enter at least 4 characters.</small>
+        }
+        @if (userForm.get('pname')?.errors?.['pattern']) {
+          <small class="text-red-600">Use only English letters with single spaces between words.</small>
+        }
       }
 
       <label for="pprice">Price</label>
@@ -17,8 +25,13 @@
 
       <label for="plocation">Location</label>
       <input id="plocation" class="border rounded p-2" formControlName="plocation" />
-      @if (userForm.controls.plocation.touched && userForm.controls.plocation.invalid) {
-        <small class="text-red-600">Location is required.</small>
+      @if (userForm.get('plocation')?.touched) {
+        @if (userForm.get('plocation')?.errors?.['required']) {
+          <small class="text-red-600">Location is required.</small>
+        }
+        @if (userForm.get('plocation')?.errors?.['pattern']) {
+          <small class="text-red-600">Use only English letters with single spaces between words.</small>
+        }
       }
 
       <label for="pdetails">Details</label>

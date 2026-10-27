@@ -1,0 +1,11 @@
+:host { display: block; font-family: Arial, sans-serif; color: #172033; background: #f5f7fa; }
+main { max-width: 920px; margin: auto; padding: 24px; line-height: 1.65; }
+section { background: white; border: 1px solid #dce2ea; border-radius: 8px; padding: 20px; margin: 20px 0; }
+h2 { margin-top: 0; font-size: 21px; }
+pre { background: #eef2f7; padding: 14px; overflow-x: auto; line-height: 1.5; }
+button { padding: 9px 14px; margin: 4px 8px 8px 0; border: 1px solid #2459a8; border-radius: 4px; background: #2459a8; color: white; cursor: pointer; }
+button:focus-visible { outline: 3px solid #edaa36; outline-offset: 2px; }
+output { display: block; padding: 6px 0; font-weight: bold; color: #174b37; overflow-wrap: anywhere; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 9px; border: 1px solid #dce2ea; text-align: left; }
+a { color: #2459a8; }

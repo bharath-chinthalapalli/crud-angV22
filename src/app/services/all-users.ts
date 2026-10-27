@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Users } from '../modals/Users';
+import { pipe, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ export class AllUsers {
   private readonly _http = inject(HttpClient);
 
   getListing(){
-    return this._http.get<Users[]>('http://localhost:3000/users');
+    return this._http.get<Users[]>('http://localhost:3000/users'),pipe(take(1));
   }
 
   addListing(data: Omit<Users, 'id'>){
