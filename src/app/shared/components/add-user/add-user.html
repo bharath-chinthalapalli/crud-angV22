@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>{{ data ? 'Edit User' : 'Add User' }}</h2>
+
+<form [formGroup]="userForm" (ngSubmit)="saveUser()">
+  <mat-dialog-content>
+    <div class="flex flex-col gap-3 py-2">
+      <label for="pname">User Name</label>
+      <input id="pname" class="border rounded p-2" formControlName="pname" />
+      @if (userForm.controls.pname.touched && userForm.controls.pname.invalid) {
+        <small class="text-red-600">Enter a name with at least 3 characters, not only spaces.</small>
+      }
+
+      <label for="pprice">Price</label>
+      <input id="pprice" class="border rounded p-2" type="number" min="1" formControlName="pprice" />
+      @if (userForm.controls.pprice.touched && userForm.controls.pprice.invalid) {
+        <small class="text-red-600">Price is required and must be at least 1.</small>
+      }
+
+      <label for="plocation">Location</label>
+      <input id="plocation" class="border rounded p-2" formControlName="plocation" />
+      @if (userForm.controls.plocation.touched && userForm.controls.plocation.invalid) {
+        <small class="text-red-600">Location is required.</small>
+      }
+
+      <label for="pdetails">Details</label>
+      <input id="pdetails" class="border rounded p-2" formControlName="pdetails" />
+      @if (userForm.controls.pdetails.touched && userForm.controls.pdetails.invalid) {
+        <small class="text-red-600">Details are required.</small>
+      }
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button matButton type="button" mat-dialog-close [disabled]="saving()">Cancel</button>
+    <button matButton="filled" type="submit" [disabled]="saving()">
+      {{ saving() ? 'Saving...' : (data ? 'Update' : 'Save') }}
+    </button>
+  </mat-dialog-actions>
+</form>

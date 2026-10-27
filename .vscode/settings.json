@@ -1,0 +1,8 @@
+{
+  "tailwindCSS.experimental.configFile": "src/tailwind.css",
+  "tailwindCSS.colorDecorators": true,
+  "editor.colorDecorators": true,
+  "editor.quickSuggestions": {
+    "strings": "on"
+  }
+}
